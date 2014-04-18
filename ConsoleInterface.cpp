@@ -9,89 +9,84 @@ ConsoleInterface::ConsoleInterface(int argc, char ** argv) : _argc(argc), _argv(
 
 ConsoleInterface::~ConsoleInterface()
 {
-	for (std::vector<ConsoleInterface::param*>::iterator it = _params.begin(); it != _params.end(); ++it)
+	for (auto it = _options.begin(); it != _options.end(); ++it)
 	{
 		delete (*it);
 	}
 }
 
-bool ConsoleInterface::IsParam(const char * paramName)
+bool ConsoleInterface::IsOption(const char * optionName)
 {
-	std::vector<ConsoleInterface::param*>::iterator it = _searchByName(paramName);
-	if (it != _params.end())
-		return true;
-	
-	return false;
+	try {
+		auto it = _search(optionName);
+		return (*it)->isSet;
+	} catch (ConsoleInterfaceException_OptionNotExists &exc)
+	{
+		return false;
+	}
 }
 
-void ConsoleInterface::AddParam(const char * paramName, bool paramUseDash)
+void ConsoleInterface::AddOption(const char * optionName, bool hasValue)
 {
-	param * p = new param(paramName, paramUseDash);
-	_params.push_back(p);
+	option * p = new option(optionName, hasValue);
+	_options.push_back(p);
 }
 
-char * ConsoleInterface::GetParamValue(const char * paramName)
+ConsoleInterface::option * ConsoleInterface::GetOption(const char * optionName)
 {
-	auto it = _searchByName(paramName);
-	return (*it)->value;
-}
-
-ConsoleInterface::param * ConsoleInterface::GetParam(size_t index)
-{
-	if (index < _params.size())
-		return _params.at(index);
-	else
-		return NULL;
-}
-
-ConsoleInterface::param * ConsoleInterface::GetParam(const char * paramName)
-{
-	auto it = _searchByName(paramName);
-	if (it != _params.end())
+	try {
+		auto it = _search(optionName);
 		return (*it);
-	else
+	} catch (ConsoleInterfaceException_OptionNotExists &exc)
+	{
 		return NULL;
+	}
 }
 
 void ConsoleInterface::Process()
 {
 	for (int i = 1; i < _argc; ++i)
 	{
-		if (argv[i][0] == '-' && argv[i][1] == '-')
+		char * equalCharPosition = strchr(_argv[i], '=');
+		char * optName;
+		char * value = NULL;
+		if (equalCharPosition != NULL)
 		{
-			try {
-				auto it = _searchByName(argv[i]+2);
-				ProcessLongParam(i);
-			} catch (ConsoleInterfaceException_ParamNotExists &exc)
-			{
-				cout << exc.write() << ": " << argv[i] << endl;
-			}
-		} else if (argv[i][0] == '-')
-		{
-			try {
-				auto it = _searchByName(argv[i]+1);
-				ProcessShortParam(i);
-			} catch (ConsoleInterfaceException_ParamNotExists &exc)
-			{
-				cout << exc.write() << ": " << argv[i] << endl;
-			}
+			int n = equalCharPosition - _argv[i];
+			optName = new char[n];
+			strncpy(optName, _argv[i], n);
+			value = _argv[i] + n + 1;
 		} else
 		{
-			try {
+			optName = _argv[i];
+		}
 
+		try {
+			auto it = _search(optName);
+			(*it)->isSet = true;
+			if ((*it)->hasValue && value != NULL)
+			{
+				(*it)->value = value;
+			} else if ((*it)->hasValue)
+			{
+				if (i+1 < _argc)
+					(*it)->value = _argv[++i];
+			}
+		} catch (ConsoleInterfaceException_OptionNotExists &exc)
+		{
+			_arguments.push_back(_argv[i]);
 		}
 	}
 }
 
-std::vector<ConsoleInterface::param*>::iterator ConsoleInterface::_searchByName(const char * paramName)
+std::vector<ConsoleInterface::option*>::iterator ConsoleInterface::_search(const char * optionName) throw(ConsoleInterfaceException_OptionNotExists)
 {
-	auto it = _params.begin();
-	while (it != _params.end() && strcmp(paramName,(*it)->name) != 0)
+	for (auto it = _options.begin(); it != _options.end(); ++it)
 	{
-		++it;
+		if (*(*it) == optionName)
+			return it;
 	}
-	if (it == _params.end())
-		throw ConsoleInterfaceException_ParamNotExists;
 
-	return it;
+	throw ConsoleInterfaceException_OptionNotExists();
 }
+

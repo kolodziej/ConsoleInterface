@@ -30,11 +30,18 @@ struct ConsoleInterfaceException_NullName : ConsoleInterfaceException
 		return "Name must not be null!\n";
 	}
 };
-struct ConsoleInterfaceException_ParamNotExists : ConsoleInterfaceException
+struct ConsoleInterfaceException_OptionNotDefined : ConsoleInterfaceException
+{
+	virtual const char * what() const throw()
+	{
+		return "Option is not defined!\n";
+	}
+};
+struct ConsoleInterfaceException_OptionNotExists : ConsoleInterfaceException
 {
 	virtual const char * whay() const throw()
 	{
-		return "Parma does not exists!\n";
+		return "Option does not exists!\n";
 	}
 };
 
@@ -44,51 +51,51 @@ public:
 	ConsoleInterface(int, char**);
 	~ConsoleInterface();
 
-	struct param
+	struct option
 	{
-		param(const char * _name, bool _useDash = true) : value(NULL), isSet(false), isLong(false), useDash(_useDash)
+		option(const char * _name, bool _hasValue = false) : name(_name), value(NULL), isSet(false), hasValue(_hasValue)
 		{
-			if (_name == NULL)
+			if (name == NULL)
 				throw ConsoleInterfaceException_NullName();
-			strcpy(name, _name);
-			size_t nameLen = strlen(_name);
-			if (nameLen > 1)
-			{
-				isLong = true;
-			}
-			else if (strlen(_name) == 1)
-			{
-				isLong = false;
-			}
 		}
-		~param()
+		~option()
 		{
-			delete name;
-			delete value;
+			//if (value != NULL)
+				//delete value;
 		}
-		char * name;
+		const char * name;
 		char * value;
 		bool isSet;
-		bool isLong;
-		bool useDash;
+		bool hasValue;
+
+		int operator==(const char * c)
+		{
+			if (strcmp(c, name) == 0)
+				return 1;
+
+			return 0;
+		}
+		int operator!=(const char * c)
+		{
+			if (strcmp(c, name) == 0)
+				return 0;
+
+			return 1;
+		}
 	};
 	
-	void AddParam(const char *, bool = true);
+	void AddOption(const char *, bool = false);
 
-	bool IsParam(const char *);
-	char * GetParamValue(const char *);
-	param * GetParam(size_t);
-	param * GetParam(const char *);
-
+	bool IsOption(const char *);
+	option * GetOption(const char *);
 	virtual void Process();
 private:
 	int _argc;
 	char ** _argv;
-	std::vector<param*> _params;
+	std::vector<option*> _options;
+	std::vector<char*> _arguments;
 
-	std::vector<param*>::iterator  _searchByName(const char *);
-	void ProcessLongParam(int);
-	void ProcessShortParam(int);
+	std::vector<option*>::iterator _search(const char *) throw(ConsoleInterfaceException_OptionNotExists);
 };
 
 #endif
