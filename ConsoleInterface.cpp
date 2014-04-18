@@ -53,8 +53,9 @@ void ConsoleInterface::Process()
 		if (equalCharPosition != NULL)
 		{
 			int n = equalCharPosition - _argv[i];
-			optName = new char[n];
+			optName = new char[n+1];
 			strncpy(optName, _argv[i], n);
+			optName[n] = '\0';
 			value = _argv[i] + n + 1;
 		} else
 		{
