@@ -30,6 +30,13 @@ struct ConsoleInterfaceException_NullName : ConsoleInterfaceException
 		return "Name must not be null!\n";
 	}
 };
+struct ConsoleInterfaceException_ParamNotExists : ConsoleInterfaceException
+{
+	virtual const char * whay() const throw()
+	{
+		return "Parma does not exists!\n";
+	}
+};
 
 class ConsoleInterface
 {
@@ -80,6 +87,8 @@ private:
 	std::vector<param*> _params;
 
 	std::vector<param*>::iterator  _searchByName(const char *);
+	void ProcessLongParam(int);
+	void ProcessShortParam(int);
 };
 
 #endif

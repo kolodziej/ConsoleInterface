@@ -1,4 +1,5 @@
 #include "ConsoleInterface.hpp"
+#include <iostream>
 #include <vector>
 #include <cstring>
 #include <cstdlib>
@@ -52,6 +53,36 @@ ConsoleInterface::param * ConsoleInterface::GetParam(const char * paramName)
 		return NULL;
 }
 
+void ConsoleInterface::Process()
+{
+	for (int i = 1; i < _argc; ++i)
+	{
+		if (argv[i][0] == '-' && argv[i][1] == '-')
+		{
+			try {
+				auto it = _searchByName(argv[i]+2);
+				ProcessLongParam(i);
+			} catch (ConsoleInterfaceException_ParamNotExists &exc)
+			{
+				cout << exc.write() << ": " << argv[i] << endl;
+			}
+		} else if (argv[i][0] == '-')
+		{
+			try {
+				auto it = _searchByName(argv[i]+1);
+				ProcessShortParam(i);
+			} catch (ConsoleInterfaceException_ParamNotExists &exc)
+			{
+				cout << exc.write() << ": " << argv[i] << endl;
+			}
+		} else
+		{
+			try {
+
+		}
+	}
+}
+
 std::vector<ConsoleInterface::param*>::iterator ConsoleInterface::_searchByName(const char * paramName)
 {
 	auto it = _params.begin();
@@ -59,5 +90,8 @@ std::vector<ConsoleInterface::param*>::iterator ConsoleInterface::_searchByName(
 	{
 		++it;
 	}
+	if (it == _params.end())
+		throw ConsoleInterfaceException_ParamNotExists;
+
 	return it;
 }
