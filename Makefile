@@ -1,12 +1,11 @@
 CXX=g++
 CXXOPTS=-c -std=c++11
-TARGETDIR=obj
 TARGET=ConsoleInterface.o
 
 ConsoleInterface: ConsoleInterface.cpp
-	$(CXX) $(CXXOPTS) ConsoleInterface.cpp -o $(TARGETDIR)/$(TARGET)
+	$(CXX) $(CXXOPTS) ConsoleInterface.cpp -o $(TARGET)
 
 all: ConsoleInterface
 
 clean:
-	rm -rf $(TARGETDIR)
+	rm -f $(TARGET)
