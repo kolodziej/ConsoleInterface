@@ -11,7 +11,7 @@ Getting started
 
 What do you have to do to use `ConsoleInterface`?
 
-1. Create an instance of `ConsoleInterface`. The constructor takes `int argc` and `char ** argv` variables.
+1. Create an instance of `ConsoleInterface`. The constructor takes `int argc` and `char \*\* argv` variables.
 2. Add your options and define which of them can have value.
 3. Run `Process` method.
 4. Use `ConsoleInterface` functions like: `IsOption`, `GetOption` etc.
@@ -28,10 +28,24 @@ Sample:
 		ConsoleInterface app(argc, argv);
 		app.AddOption("-v");
 		app.AddOption("--version");
-		app.AddOption("--number",true);
-		app.Process();
+		app.AddOption("--number",true); // --number parameter has a value:
+		// __--number=value__ or __--number value__
+		try {
+			app.Process();
+		} catch (ConsoleInterfaceException &exc)
+		{
+			cout << exc.what();
+			return 0;
+		}
 		cout << "-v: " << (int)app.IsOption("-v") << "\n--version: " << (int)app.IsOption("--version") << "\n--number: " << (int)app.IsOption("--number") << "\n";
 		if (app.IsOption("--number") && app.GetOption("--number")->value != NULL)
 			cout << "Number: " << app.GetOption("--number")->value << "\n";
 		return 0;
 	}
+
+You can try it running these commands:
+
+	./ConsoleInterfaceTest --number 5 -v
+	./ConsoleInterfaceTest --version --number
+	./ConsoleInterfaceTest -v --version --number=8
+	./ConsoleInterfaceTest --number 4

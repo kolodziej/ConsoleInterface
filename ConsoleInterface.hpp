@@ -39,9 +39,16 @@ struct ConsoleInterfaceException_OptionNotDefined : ConsoleInterfaceException
 };
 struct ConsoleInterfaceException_OptionNotExists : ConsoleInterfaceException
 {
-	virtual const char * whay() const throw()
+	virtual const char * what() const throw()
 	{
 		return "Option does not exists!\n";
+	}
+};
+struct ConsoleInterfaceException_ValueNotDefined : ConsoleInterfaceException
+{
+	virtual const char * what() const throw()
+	{
+		return "Value for one or more options isn't defined!\n";
 	}
 };
 
