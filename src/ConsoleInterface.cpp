@@ -72,6 +72,8 @@ void ConsoleInterface::Process()
 			{
 				if (i+1 < _argc)
 					(*it)->value = _argv[++i];
+				else
+					throw ConsoleInterfaceException_ValueNotDefined();
 			}
 		} catch (ConsoleInterfaceException_OptionNotExists &exc)
 		{
