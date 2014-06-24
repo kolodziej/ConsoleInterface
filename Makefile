@@ -1,5 +1,5 @@
 CXX=g++
-CXXOPTS=-c -std=c++11 -I./headers
+CXXOPTS=-c -g -std=c++11 -I./headers
 LIBTARGET=lib/libConsoleInterface.a
 TARGET=libConsoleInterface.o
 

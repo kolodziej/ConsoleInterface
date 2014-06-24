@@ -9,7 +9,7 @@ using namespace CI;
 Application::Application(int _argc, char ** _argv) :
 	argc(_argc),
 	argv(_argv),
-	value_queue(new Option*[_argc]),
+	value_queue(NULL),
 	queue_b(0),
 	queue_e(0)
 {}
@@ -38,6 +38,7 @@ std::vector<Option*> & Application::GetOptions()
 
 void Application::Process()
 {
+	value_queue = new Option*[options.size()];
 	for (int i = 1; i < argc; ++i)
 	{
 		const char *arg = argv[i];
@@ -52,6 +53,7 @@ void Application::Process()
 			_ProcessValue(arg);
 		}
 	}
+	delete [] value_queue;
 }
 
 void Application::_ProcessShort(const char * _str)
@@ -76,7 +78,7 @@ void Application::_ProcessLong(const char * _str)
 bool Application::_ProcessOption(char _arg)
 {
 	auto it = options.begin();
-	while ((*it)->shortName != _arg && it != options.end())
+	while (it != options.end() && (*it)->shortName != _arg)
 		++it;
 
 	if (it == options.end())
@@ -95,7 +97,7 @@ bool Application::_ProcessOption(char _arg)
 bool Application::_ProcessOption(std::string _arg)
 {
 	auto it = options.begin();
-	while ((*it)->longName != _arg && it != options.end())
+	while (it != options.end() && (*it)->longName != _arg)
 		++it;
 
 	if (it == options.end())
@@ -111,9 +113,8 @@ bool Application::_ProcessOption(std::string _arg)
 	return true;
 }
 
-bool Application::_ProcessValue(const char * _val)
+void Application::_ProcessValue(const char * _val)
 {
-	size_t len = strlen(_val);
-	(value_queue[queue_b++])->value = std::string(_val,len);
-	return true;
+	std::string value(_val);
+	(value_queue[queue_b++])->value = value;
 }
