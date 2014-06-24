@@ -28,10 +28,10 @@ namespace CI
 
 			void _ProcessShort(const char *);
 			void _ProcessLong(const char *);
+			void _ProcessValue(const char*);
 
 			bool _ProcessOption(char);
 			bool _ProcessOption(std::string);
-			bool _ProcessValue(const char *);
 	};
 }
 #endif
