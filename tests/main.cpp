@@ -1,23 +1,25 @@
 #include <iostream>
+#include <string>
 #include "ConsoleInterface.hpp"
 
 using namespace std;
+using namespace CI;
 
 int main(int argc, char ** argv)
 {
-	ConsoleInterface app(argc, argv);
-	app.AddOption("-v");
-	app.AddOption("--version");
-	app.AddOption("--number",true);
-	try {
-		app.Process();
-	} catch (ConsoleInterfaceException &exc)
+	Application app(argc, argv);
+	app.AddOption('v', "version", false);
+	app.AddOption(0, "compile", false);
+	app.AddOption('a', "archive", true);
+	app.AddOption('f', "file", true);
+	app.Process();
+	for (auto it = app.GetOptions().begin(); it != app.GetOptions().end(); ++it)
 	{
-		cout << exc.what();
-		return 0;
+		cout << (*it)->shortName << " == " << (*it)->longName << " (" << static_cast<int>((*it)->isset) << ")";
+		if ((*it)->hasValue)
+			cout << " value: " << (*it)->value;
+
+		cout << "\n";
 	}
-	cout << "-v: " << (int)app.IsOption("-v") << "\n--version: " << (int)app.IsOption("--version") << "\n--number: " << (int)app.IsOption("--number") << "\n";
-	if (app.IsOption("--number") && app.GetOption("--number")->value != NULL)
-		cout << "Number: " << app.GetOption("--number")->value << "\n";
 	return 0;
 }

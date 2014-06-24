@@ -1,11 +1,21 @@
 CXX=g++
 CXXOPTS=-c -std=c++11 -I./headers
-TARGET=lib/libConsoleInterface.a
+LIBTARGET=lib/libConsoleInterface.a
+TARGET=libConsoleInterface.o
 
-ConsoleInterface: src/ConsoleInterface.cpp
-	$(CXX) $(CXXOPTS) src/ConsoleInterface.cpp -o $(TARGET)
 
-all: ConsoleInterface
+Application.o: src/Application.cpp
+	$(CXX) $(CXXOPTS) src/Application.cpp -o Application.o
 
-clean:
+ConsoleInterface: Application.o
+	ar rcvs $(LIBTARGET) Application.o
+
+all: delete ConsoleInterface cleanup
+
+cleanup:
+	rm -f *.o
+
+delete:
+	rm -f *.o
 	rm -f $(TARGET)
+	rm -f $(LIBTARGET)

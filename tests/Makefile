@@ -1,10 +1,9 @@
 CXX=g++
-CXXFLAGS=-std=c++11 -g
+CXXFLAGS=-std=c++11 -g -I../headers/	-L../lib/
 TARGET=ConsoleInterfaceTest
 
-all: main.cpp ../ConsoleInterface.cpp
-	$(CXX) -c $(CXXFLAGS) ../ConsoleInterface.cpp -o ../libConsoleInterface.a
-	$(CXX) $(CXXFLAGS) -I.. -L.. -lConsoleInterface main.cpp -o $(TARGET)
+all: main.cpp
+	$(CXX) $(CXXFLAGS) main.cpp -lConsoleInterface -o $(TARGET)
 
 clean:
 	rm -f $(TARGET)
