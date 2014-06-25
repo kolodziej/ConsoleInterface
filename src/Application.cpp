@@ -43,7 +43,7 @@ std::vector<Option*> & Application::GetOptions()
 	return options;
 }
 
-void Application::Process()
+void Application::Process() throw(Exception, Exception_OptionNotExists, Exception_InvalidOptionName, Exception_OptionHasNotValue)
 {
 	value_queue = new Option*[options.size()];
 	for (int i = 1; i < argc; ++i)

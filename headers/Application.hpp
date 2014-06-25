@@ -21,8 +21,7 @@ namespace CI
 			std::string & GetOptionValue(std::string &);
 			std::vector<Option*> & GetOptions();
 
-			bool * Processed() const;
-			void Process();
+			void Process() throw(Exception, Exception_OptionNotExists, Exception_InvalidOptionName, Exception_OptionHasNotValue);
 
 		private:
 			int argc;
