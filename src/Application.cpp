@@ -38,6 +38,24 @@ bool Application::IsOptionSet(char _shortName)
 	return opt->Isset();
 }
 
+bool Application::IsOptionSet(std::string & _longName)
+{
+	Option * opt = _SearchOption(_longName);
+	return opt->Isset();
+}
+
+std::string & Application::GetOptionValue(char _shortName)
+{
+	Option * opt = _SearchOption(_shortName);
+	return opt->GetValue();
+}
+
+std::string & Application::GetOptionValue(std::string & _longName)
+{
+	Option * opt = _SearchOption(_longName);
+	return opt->GetValue();
+}
+
 std::vector<Option*> & Application::GetOptions()
 {
 	return options;

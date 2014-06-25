@@ -14,8 +14,9 @@ What do you have to do to use `ConsoleInterface`?
 
 1. Create an instance of `ConsoleInterface`. The constructor takes `int argc` and `char \*\* argv` variables.
 2. Add your options and define which of them can have value using `AddOption` method.
-3. Run `Process` method.
-4. __Advanced checking options' statuses and values are being developed ;)__ By the time they will be ready you can use `GetOptions` method and `for` loop. `Option` is a `struct` so all its elements are public.
+3. Run `Process` method. `Process` method throws some exceptions: `Exception_OptionNotExists` (when there is no option with such short name or long name), `Excpetion_InvalidOptionName` (when you try to set invalid option name; short name must be a letter a-z or A-Z; long name must starts with a letter, then you can use letters and numbers), `Exception_OptionHasNotValue` (when you try to get value of option which doesn't have a value)
+4. To check if option is set or get its value you can use `Application::IsOptionSet` or `Option::Isset` methods.
+5. To get option's value you will use these methods: `Application::GetOptionValue` and `Option::GetValue`.
 
 Samples
 -------
@@ -25,6 +26,8 @@ You can check sample application which use `ConsoleInterface` in `tests` directo
 	make all
 	cd tests
 	make all
-	./ConsoleInterfaceTest --branch -ha branch_value archive_value < dataset
+	./ConsoleInterfaceTest --branch -ha branch_value archive_value
+
+Printed information contain bash colour codes. They probably wouldn't work in some shells.
 
 __More information and tutorial soon!__
