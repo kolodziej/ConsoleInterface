@@ -1,6 +1,7 @@
 #ifndef CI_APPLICATION_HPP
 #define CI_APPLICATION_HPP
 #include "Option.hpp"
+#include "Exception.hpp"
 #include <string>
 #include <vector>
 
@@ -37,8 +38,8 @@ namespace CI
 			bool _ProcessOption(char);
 			bool _ProcessOption(std::string);
 
-			Option * _SearchOption(char);
-			Option * _SearchOption(std::string &);
+			Option * _SearchOption(char) throw(Exception_OptionNotExists);
+			Option * _SearchOption(std::string &) throw(Exception_OptionNotExists);
 	};
 }
 #endif

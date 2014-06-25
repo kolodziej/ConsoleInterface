@@ -2,8 +2,6 @@
 #define CI_EXCEPTION_HPP
 #include "Option.hpp"
 #include <exception>
-#include <string>
-#include <stringstream>
 
 namespace CI
 {

@@ -4,29 +4,29 @@
 
 using namespace CI;
 
-void Option::SetShortName(char _shortName)
+void Option::SetShortName(char _shortName) throw(Exception_InvalidOptionName)
 {
 	// validate a-zA-Z
 	if ((_shortName >= 'a' && _shortName <= 'z') || (_shortName >= 'A' && _shortName <= 'Z'))
 		shortName = _shortName;
 	else
-		throw Exception_InvalidOptionName;
+		throw Exception_InvalidOptionName();
 }
 
-void Option::SetLongName(std::string & _longName)
+void Option::SetLongName(std::string & _longName) throw(Exception_InvalidOptionName)
 {
 	if (_ValidateLongName(_longName))
 		longName = _longName;
 	else
-		throw Exception_InvalidOptionName;
+		throw Exception_InvalidOptionName();
 }
 
-void Option::SetValue(std::string & _value)
+void Option::SetValue(std::string & _value) throw(Exception_OptionHasNotValue)
 {
 	if (hasValue)
 		value = _value;
 	else
-		throw Exception_OptionHasNotValue;
+		throw Exception_OptionHasNotValue();
 }
 
 bool Option::_ValidateLongName(std::string & _value)

@@ -114,7 +114,7 @@ void Application::_ProcessValue(const char * _val)
 	(value_queue[queue_b++])->SetValue(value);
 }
 
-Option * Application::_SearchOption(char _shortName)
+Option * Application::_SearchOption(char _shortName) throw(Exception_OptionNotExists)
 {
 	auto it = options.begin();
 	while (it != options.end() && (*it)->GetShortName() != _shortName)
@@ -126,7 +126,7 @@ Option * Application::_SearchOption(char _shortName)
 	return (*it);
 }
 
-Option * Application::_SearchOption(std::string & _longName)
+Option * Application::_SearchOption(std::string & _longName) throw(Exception_OptionNotExists)
 {
 	auto it = options.begin();
 	while (it != options.end() && (*it)->GetLongName() != _longName)

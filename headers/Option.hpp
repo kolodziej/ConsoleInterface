@@ -1,5 +1,6 @@
 #ifndef CI_OPTION_HPP
 #define CI_OPTION_HPP
+#include "Exception.hpp"
 #include <string>
 
 namespace CI
@@ -20,8 +21,8 @@ namespace CI
 				hasValue(false)
 			{}
 
-			void SetShortName(char);
-			void SetLongName(std::string &);
+			void SetShortName(char) throw(Exception_InvalidOptionName);
+			void SetLongName(std::string &) throw(Exception_InvalidOptionName);
 			void SetHasValue(bool _hasValue)
 			{
 				hasValue = _hasValue;
@@ -34,7 +35,7 @@ namespace CI
 			{
 				isset = false;
 			}
-			void SetValue(std::string &);
+			void SetValue(std::string &) throw(Exception_OptionHasNotValue);
 
 			char GetShortName()
 			{
