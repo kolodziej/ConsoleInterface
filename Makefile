@@ -7,8 +7,11 @@ TARGET=libConsoleInterface.o
 Application.o: src/Application.cpp
 	$(CXX) $(CXXOPTS) src/Application.cpp -o Application.o
 
-ConsoleInterface: Application.o
-	ar rcvs $(LIBTARGET) Application.o
+Option.o: src/Option.cpp
+	$(CXX) $(CXXOPTS) src/Option.cpp -o Option.o
+
+ConsoleInterface: Application.o Option.o
+	ar rcvs $(LIBTARGET) Application.o Option.o
 
 all: delete ConsoleInterface cleanup
 

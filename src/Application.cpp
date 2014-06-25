@@ -1,5 +1,6 @@
 #include "Application.hpp"
 #include "Option.hpp"
+#include "Exception.hpp"
 #include <string>
 #include <vector>
 #include <cstring>
@@ -25,10 +26,16 @@ void Application::AddOption(Option * _opt)
 void Application::AddOption(char _shortName, std::string _longName, bool _hasValue)
 {
 	Option * opt = new Option;
-	opt->shortName = _shortName;
-	opt->longName = _longName;
-	opt->hasValue = _hasValue;
+	opt->SetShortName(_shortName);
+	opt->SetLongName(_longName);
+	opt->SetHasValue(_hasValue);
 	AddOption(opt);
+}
+
+bool Application::IsOptionSet(char _shortName)
+{
+	Option * opt = _SearchOption(_shortName);
+	return opt->Isset();
 }
 
 std::vector<Option*> & Application::GetOptions()
@@ -75,40 +82,28 @@ void Application::_ProcessLong(const char * _str)
 	_ProcessOption(option);
 }
 
-bool Application::_ProcessOption(char _arg)
+bool Application::_ProcessOption(char _shortName)
 {
-	auto it = options.begin();
-	while (it != options.end() && (*it)->shortName != _arg)
-		++it;
-
-	if (it == options.end())
-		return false;
-
+	Option * opt = _SearchOption(_shortName);
 	// value
-	if ((*it)->hasValue)
-		value_queue[queue_e++] = (*it);
+	if (opt->HasValue())
+		value_queue[queue_e++] = opt;
 
 	// call Option handler
-	(*it)->isset = true;
+	opt->Set();
 
 	return true;
 }
 
-bool Application::_ProcessOption(std::string _arg)
+bool Application::_ProcessOption(std::string _longName)
 {
-	auto it = options.begin();
-	while (it != options.end() && (*it)->longName != _arg)
-		++it;
-
-	if (it == options.end())
-		return false;
-
+	Option * opt = _SearchOption(_longName);
 	// value
-	if ((*it)->hasValue)
-		value_queue[queue_e++] = (*it);
+	if (opt->HasValue())
+		value_queue[queue_e++] = opt;
 
 	// call Option handler
-	(*it)->isset = true;
+	opt->Set();
 
 	return true;
 }
@@ -116,5 +111,29 @@ bool Application::_ProcessOption(std::string _arg)
 void Application::_ProcessValue(const char * _val)
 {
 	std::string value(_val);
-	(value_queue[queue_b++])->value = value;
+	(value_queue[queue_b++])->SetValue(value);
+}
+
+Option * Application::_SearchOption(char _shortName)
+{
+	auto it = options.begin();
+	while (it != options.end() && (*it)->GetShortName() != _shortName)
+		++it;
+
+	if (it == options.end())
+		throw Exception(Exception::OPTION_NOT_EXISTS);
+
+	return (*it);
+}
+
+Option * Application::_SearchOption(std::string & _longName)
+{
+	auto it = options.begin();
+	while (it != options.end() && (*it)->GetLongName() != _longName)
+		++it;
+
+	if (it == options.end())
+		throw Exception(Exception::OPTION_NOT_EXISTS);
+
+	return (*it);
 }

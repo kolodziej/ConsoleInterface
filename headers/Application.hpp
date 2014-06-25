@@ -14,6 +14,10 @@ namespace CI
 
 			void AddOption(char, std::string, bool);
 			void AddOption(Option*);
+			bool IsOptionSet(char);
+			bool IsOptionSet(std::string &);
+			std::string & GetOptionValue(char);
+			std::string & GetOptionValue(std::string &);
 			std::vector<Option*> & GetOptions();
 
 			bool * Processed() const;
@@ -32,6 +36,9 @@ namespace CI
 
 			bool _ProcessOption(char);
 			bool _ProcessOption(std::string);
+
+			Option * _SearchOption(char);
+			Option * _SearchOption(std::string &);
 	};
 }
 #endif
