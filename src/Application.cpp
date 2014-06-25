@@ -121,7 +121,7 @@ Option * Application::_SearchOption(char _shortName)
 		++it;
 
 	if (it == options.end())
-		throw Exception(Exception::OPTION_NOT_EXISTS);
+		throw Exception_OptionNotExists();
 
 	return (*it);
 }
@@ -133,7 +133,7 @@ Option * Application::_SearchOption(std::string & _longName)
 		++it;
 
 	if (it == options.end())
-		throw Exception(Exception::OPTION_NOT_EXISTS);
+		throw Exception_OptionNotExists();
 
 	return (*it);
 }

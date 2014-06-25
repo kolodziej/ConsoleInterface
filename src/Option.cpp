@@ -10,7 +10,7 @@ void Option::SetShortName(char _shortName)
 	if ((_shortName >= 'a' && _shortName <= 'z') || (_shortName >= 'A' && _shortName <= 'Z'))
 		shortName = _shortName;
 	else
-		throw Exception(Exception::INVALID_OPTION_NAME);
+		throw Exception_InvalidOptionName;
 }
 
 void Option::SetLongName(std::string & _longName)
@@ -18,7 +18,7 @@ void Option::SetLongName(std::string & _longName)
 	if (_ValidateLongName(_longName))
 		longName = _longName;
 	else
-		throw Exception(Exception::INVALID_OPTION_NAME);
+		throw Exception_InvalidOptionName;
 }
 
 void Option::SetValue(std::string & _value)
@@ -26,7 +26,7 @@ void Option::SetValue(std::string & _value)
 	if (hasValue)
 		value = _value;
 	else
-		throw Exception(Exception::OPTION_HAS_NOT_VALUE);
+		throw Exception_OptionHasNotValue;
 }
 
 bool Option::_ValidateLongName(std::string & _value)

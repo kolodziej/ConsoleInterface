@@ -2,19 +2,41 @@
 #define CI_EXCEPTION_HPP
 #include "Option.hpp"
 #include <exception>
+#include <string>
+#include <stringstream>
 
 namespace CI
 {
 	struct Exception : std::exception
 	{
-		enum Code
+		virtual const char * what() const throw()
 		{
-			OPTION_NOT_EXISTS = 404,
-			INVALID_OPTION_NAME,
-			OPTION_HAS_NOT_VALUE,
-		};
-		Code code;
-		Exception(Code _code) : code(_code) {}
+			return "CI: An error occurred!";
+		}
+	};
+
+	struct Exception_OptionNotExists : Exception
+	{
+		virtual const char * what() const throw()
+		{
+			return "CI: Option doesn't exist!";
+		}
+	};
+
+	struct Exception_InvalidOptionName : Exception
+	{
+		virtual const char * what() const throw()
+		{
+			return "CI: Invalid option name!";
+		}
+	};
+
+	struct Exception_OptionHasNotValue : Exception
+	{
+		virtual const char * what() const throw()
+		{
+			return "CI: Option has not a value!";
+		}
 	};
 }
 
