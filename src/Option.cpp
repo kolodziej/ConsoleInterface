@@ -6,6 +6,11 @@ using namespace CI;
 
 void Option::SetShortName(char _shortName) throw(Exception_InvalidOptionName)
 {
+	if (_shortName == 0)
+	{
+		_shortName = 0;
+		return;
+	}
 	// validate a-zA-Z
 	if ((_shortName >= 'a' && _shortName <= 'z') || (_shortName >= 'A' && _shortName <= 'Z'))
 		shortName = _shortName;
@@ -15,6 +20,11 @@ void Option::SetShortName(char _shortName) throw(Exception_InvalidOptionName)
 
 void Option::SetLongName(std::string & _longName) throw(Exception_InvalidOptionName)
 {
+	if (_longName.empty())
+	{
+		longName = _longName;
+		return;
+	}
 	if (_ValidateLongName(_longName))
 		longName = _longName;
 	else
