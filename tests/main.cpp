@@ -87,9 +87,11 @@ int main(int argc, char ** argv)
 	} catch (Exception_OptionNotExists &e)
 	{
 		cerr << e.what() << "\n";
+		return 1;
 	} catch (Exception_OptionHasNotValue &e)
 	{
 		cerr << e.what() << "\n";
+		return 1;
 	}
 
 	for (auto it = app.GetOptions().begin(); it != app.GetOptions().end(); ++it)

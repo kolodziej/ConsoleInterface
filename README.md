@@ -18,6 +18,11 @@ What do you have to do to use `ConsoleInterface`?
 4. To check if option is set or get its value you can use `Application::IsOptionSet` or `Option::Isset` methods.
 5. To get option's value you will use these methods: `Application::GetOptionValue` and `Option::GetValue`.
 
+Valid options' names
+--------------------
+
+As I mentioned in the above paragraph valid short names contain __one letter__ uppercase or lowercase. Algorithm is case sensitive so you can set 52 different short names. __First sign__ of long name must be an uppercase or lowercase letter. Each of next signs can be a letter or a number.
+
 Samples
 -------
 
