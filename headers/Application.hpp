@@ -20,6 +20,7 @@ namespace CI
 			std::string & GetOptionValue(char);
 			std::string & GetOptionValue(std::string &);
 			std::vector<Option*> & GetOptions();
+			std::vector<std::string> & GetArguments();
 
 			void Process() throw(Exception, Exception_OptionNotExists, Exception_InvalidOptionName, Exception_OptionHasNotValue);
 
@@ -29,10 +30,12 @@ namespace CI
 			Option ** value_queue;
 			int queue_b, queue_e;
 			std::vector<Option*> options;
+			std::vector<std::string> arguments;
 
 			void _ProcessShort(const char *);
 			void _ProcessLong(const char *);
 			void _ProcessValue(const char*);
+			void _ProcessArgument(const char *);
 
 			bool _ProcessOption(char);
 			bool _ProcessOption(std::string);

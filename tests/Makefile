@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-std=c++11 -g -I../headers/	-L../lib/
+CXXFLAGS=-std=c++11 -g -I../headers/	-L../lib/Debug/
 TARGET=ConsoleInterfaceTest
 
 all: main.cpp

@@ -98,5 +98,13 @@ int main(int argc, char ** argv)
 	{
 		cout << (*it);
 	}
+
+	// arguments
+	cout << "Arguments:\n\e[1;32m";
+	for (auto it = app.GetArguments().begin(); it != app.GetArguments().end(); ++it)
+	{
+		cout << "\t" << (*it) << "\n";
+	}
+	cout << "\e[0m";
 	return 0;
 }

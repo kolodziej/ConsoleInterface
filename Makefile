@@ -1,19 +1,25 @@
 CXX=g++
-CXXOPTS=-c -g -std=c++11 -I./headers
-LIBTARGET=lib/libConsoleInterface.a
+CXXOPTS=-c -std=c++11 -I./headers
+LIBTARGET_RELEASE=lib/Release/libConsoleInterface.a
+LIBTARGET_DEBUG=lib/Debug/libConsoleInterface.a
 TARGET=libConsoleInterface.o
+OBJS=src/Application.o src/Option.o
 
 
-Application.o: src/Application.cpp
-	$(CXX) $(CXXOPTS) src/Application.cpp -o Application.o
+$(OBJS): %.o: %.cpp
+	$(CXX) $(CXXOPTS) $< -o $@
 
-Option.o: src/Option.cpp
-	$(CXX) $(CXXOPTS) src/Option.cpp -o Option.o
+debug: CXXOPTS += -DDEBUG -g
+debug: $(OBJS)
+	ar rcvs $(LIBTARGET_DEBUG) $(OBJS)
 
-ConsoleInterface: Application.o Option.o
-	ar rcvs $(LIBTARGET) Application.o Option.o
+release: $(OBJS)
+	ar rcvs $(LIBTARGET_RELEASE) $(OBJS)
+	
+all_release: delete release cleanup
+all_debug: delete debug cleanup
 
-all: delete ConsoleInterface cleanup
+all: all_release
 
 cleanup:
 	rm -f *.o

@@ -61,6 +61,11 @@ std::vector<Option*> & Application::GetOptions()
 	return options;
 }
 
+std::vector<std::string> & Application::GetArguments()
+{
+	return arguments;
+}
+
 void Application::Process() throw(Exception, Exception_OptionNotExists, Exception_InvalidOptionName, Exception_OptionHasNotValue)
 {
 	value_queue = new Option*[options.size()];
@@ -128,8 +133,20 @@ bool Application::_ProcessOption(std::string _longName)
 
 void Application::_ProcessValue(const char * _val)
 {
-	std::string value(_val);
-	(value_queue[queue_b++])->SetValue(value);
+	if (queue_b < queue_e)
+	{
+		std::string value(_val);
+		(value_queue[queue_b++])->SetValue(value);
+	} else
+	{
+		_ProcessArgument(_val);
+	}
+}
+
+void Application::_ProcessArgument(const char * _val)
+{
+	std::string arg(_val);
+	arguments.push_back(arg);
 }
 
 Option * Application::_SearchOption(char _shortName) throw(Exception_OptionNotExists)
