@@ -100,7 +100,11 @@ int main(int argc, char ** argv)
 	}
 
 	// arguments
-	cout << "Arguments:\n\e[1;32m";
+	cout << "Arguments: \n\e[1;32m";
+	if (app.GetArguments().size() == 0)
+	{
+		cout << "\e[1;31mthere are no arguments\n";
+	}
 	for (auto it = app.GetArguments().begin(); it != app.GetArguments().end(); ++it)
 	{
 		cout << "\t" << (*it) << "\n";

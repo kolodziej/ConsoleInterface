@@ -10,6 +10,12 @@ namespace CI
 	class Application
 	{
 		public:
+			enum Settings { 
+				BadOptionsWarning = 1 << 0,
+				TooMuchArgsWarning = 1 << 1,
+				TurnOffWarnings = 1 << 2,
+				
+			};
 			Application(int, char**);
 			~Application();
 
