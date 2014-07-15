@@ -17,6 +17,7 @@ What do you have to do to use `ConsoleInterface`?
 3. Run `Process` method. `Process` method throws some exceptions: `Exception_OptionNotExists` (when there is no option with such short name or long name), `Excpetion_InvalidOptionName` (when you try to set invalid option name; short name must be a letter a-z or A-Z; long name must starts with a letter, then you can use letters and numbers), `Exception_OptionHasNotValue` (when you try to get value of option which doesn't have a value)
 4. To check if option is set or get its value you can use `Application::IsOptionSet` or `Option::Isset` methods.
 5. To get option's value you will use these methods: `Application::GetOptionValue` and `Option::GetValue`.
+6. Values which couldn't be identified with options are treated as arguments and being passed to `std::vector<std::string>` which can be accessed by `Application::GetArguments()` method.
 
 Valid options' names
 --------------------
@@ -31,7 +32,8 @@ You can check sample application which use `ConsoleInterface` in `tests` directo
 	make all
 	cd tests
 	make all
-	./ConsoleInterfaceTest --branch -ha branch_value archive_value
+	./ConsoleInterfaceTest --branch -ha branch_value archive_value argument_one "argument two"
+	./ConsoleInterfaceTest -ba branch_value archive_value
 
 Printed information contain bash colour codes. They probably wouldn't work in some shells.
 
