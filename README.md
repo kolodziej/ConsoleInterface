@@ -5,8 +5,6 @@ Console Interface is a simple framework which provides an interface for our appl
 
 You can define your options in `ConsoleInterface` class instance and run `Process()` method. Then you can check which options has been passed to application and what were they values (if they were).
 
-__Framework is in alpha version! It will gain some very interesting and important features!__
-
 Getting started
 ---------------
 
