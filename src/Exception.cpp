@@ -9,14 +9,14 @@ const char * Exception::what() const throw()
 	return "CI: An undefined error occurred!";
 }
 
-Exception_OptionNotExists::Exception_OptionNotExists(std::string  _longName) : longName(_longName), shortName(0)
+Exception_OptionNotExists::Exception_OptionNotExists(std::string  _longName)
 {
 	std::stringstream str;
 	str << "CI: Option --" << _longName << " does not exist!\n";
 	getline(str, error);
 }
 
-Exception_OptionNotExists::Exception_OptionNotExists(char _shortName) : shortName(0)
+Exception_OptionNotExists::Exception_OptionNotExists(char _shortName)
 {
 	std::stringstream str;
 	str << "CI: Option -" << _shortName << " does not exist!\n";
@@ -64,4 +64,14 @@ Exception_OptionHasNotValue::Exception_OptionHasNotValue(char _shortName)
 const char * Exception_OptionHasNotValue::what() const throw()
 {
 	return error.c_str();
+}
+
+const char * Exception_NoArguments::what() const throw()
+{
+	return "CI: Using arguments is not allowed!";
+}
+
+const char * Exception_ValuesRequired::what() const throw()
+{
+	return "CI: Not all options which get value have them!";
 }

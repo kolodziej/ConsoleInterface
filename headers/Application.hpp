@@ -11,12 +11,10 @@ namespace CI
 	{
 		public:
 			enum Settings { 
-				BadOptionsWarning = 1 << 0,
-				TooMuchArgsWarning = 1 << 1,
-				TurnOffWarnings = 1 << 2,
-				
+				RequireValue = 1 << 0,
+				NoArguments = 1 << 1,
 			};
-			Application(int, char**);
+			Application(int, char**, unsigned int = 0);
 			~Application();
 
 			void AddOption(char, std::string, bool);
@@ -35,16 +33,19 @@ namespace CI
 			char ** argv;
 			Option ** value_queue;
 			int queue_b, queue_e;
+			unsigned int settings;
 			std::vector<Option*> options;
 			std::vector<std::string> arguments;
 
 			void _ProcessShort(const char *);
 			void _ProcessLong(const char *);
-			void _ProcessValue(const char*);
+			void _ProcessValue(const char *);
 			void _ProcessArgument(const char *);
 
 			bool _ProcessOption(char);
 			bool _ProcessOption(std::string);
+
+			bool _CheckSettings(Settings);
 
 			Option * _SearchOption(char) throw(Exception_OptionNotExists);
 			Option * _SearchOption(std::string &) throw(Exception_OptionNotExists);

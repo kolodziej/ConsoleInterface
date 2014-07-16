@@ -7,12 +7,13 @@
 
 using namespace CI;
 
-Application::Application(int _argc, char ** _argv) :
+Application::Application(int _argc, char ** _argv, unsigned int _settings) :
 	argc(_argc),
 	argv(_argv),
 	value_queue(NULL),
 	queue_b(0),
-	queue_e(0)
+	queue_e(0),
+	settings(_settings)
 {}
 
 Application::~Application()
@@ -83,6 +84,10 @@ void Application::Process() throw(Exception, Exception_OptionNotExists, Exceptio
 			_ProcessValue(arg);
 		}
 	}
+	if (queue_b < queue_e && _CheckSettings(RequireValue))
+	{
+		throw Exception_ValuesRequired();
+	}
 	delete [] value_queue;
 }
 
@@ -137,6 +142,9 @@ void Application::_ProcessValue(const char * _val)
 	{
 		std::string value(_val);
 		(value_queue[queue_b++])->SetValue(value);
+	} else if (_CheckSettings(NoArguments))
+	{
+		throw Exception_NoArguments();
 	} else
 	{
 		_ProcessArgument(_val);
@@ -147,6 +155,11 @@ void Application::_ProcessArgument(const char * _val)
 {
 	std::string arg(_val);
 	arguments.push_back(arg);
+}
+
+bool Application::_CheckSettings(Settings _set)
+{
+	return static_cast<bool>(settings & _set);
 }
 
 Option * Application::_SearchOption(char _shortName) throw(Exception_OptionNotExists)

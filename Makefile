@@ -16,15 +16,13 @@ debug: $(OBJS)
 release: $(OBJS)
 	ar rcvs $(LIBTARGET_RELEASE) $(OBJS)
 	
-all_release: delete release cleanup
-all_debug: delete debug cleanup
+all_release: release cleanup
+all_debug: debug cleanup
 
 all: all_release
 
 cleanup:
-	rm -f *.o
+	rm -f src/*.o
 
 delete:
-	rm -f *.o
-	rm -f $(TARGET)
-	rm -f $(LIBTARGET)
+	rm -f $(LIBTARGET_DEBUG) $(LIBTARGET_RELEASE) $(TARGET) src/*.o

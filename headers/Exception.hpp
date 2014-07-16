@@ -34,6 +34,16 @@ namespace CI
 		Exception_OptionHasNotValue(char);
 		virtual const char * what() const throw();
 	};
+
+	struct Exception_NoArguments : Exception
+	{
+		virtual const char * what() const throw();
+	};
+
+	struct Exception_ValuesRequired : Exception
+	{
+		virtual const char * what() const throw();
+	};
 }
 
 #endif

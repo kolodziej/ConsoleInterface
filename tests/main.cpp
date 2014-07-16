@@ -48,7 +48,7 @@ ostream & operator<<(ostream & stream, Option * opt)
 
 int main(int argc, char ** argv)
 {
-	Application app(argc, argv);
+	Application app(argc, argv, Application::NoArguments | Application::RequireValue);
 	fstream f("dataset", ios::in);
 	if (!f)
 	{
@@ -89,6 +89,14 @@ int main(int argc, char ** argv)
 		cerr << e.what() << "\n";
 		return 1;
 	} catch (Exception_OptionHasNotValue &e)
+	{
+		cerr << e.what() << "\n";
+		return 1;
+	} catch (Exception_NoArguments &e)
+	{
+		cerr << e.what() << "\n";
+		return 1;
+	} catch (Exception_ValuesRequired &e)
 	{
 		cerr << e.what() << "\n";
 		return 1;
