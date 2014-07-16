@@ -19,12 +19,12 @@ Application::Application(int _argc, char ** _argv, unsigned int _settings) :
 Application::~Application()
 {}
 
-void Application::AddOption(Option * _opt)
+void Application::AddOption(Option * _opt) throw(Exception_InvalidOptionName)
 {
 	options.push_back(_opt);
 }
 
-void Application::AddOption(char _shortName, std::string _longName, bool _hasValue)
+void Application::AddOption(char _shortName, std::string _longName, bool _hasValue) throw(Exception_InvalidOptionName)
 {
 	Option * opt = new Option;
 	opt->SetShortName(_shortName);
@@ -45,13 +45,13 @@ bool Application::IsOptionSet(std::string & _longName)
 	return opt->Isset();
 }
 
-std::string & Application::GetOptionValue(char _shortName)
+std::string & Application::GetOptionValue(char _shortName) throw(Exception_OptionHasNotValue)
 {
 	Option * opt = _SearchOption(_shortName);
 	return opt->GetValue();
 }
 
-std::string & Application::GetOptionValue(std::string & _longName)
+std::string & Application::GetOptionValue(std::string & _longName) throw(Exception_OptionHasNotValue)
 {
 	Option * opt = _SearchOption(_longName);
 	return opt->GetValue();

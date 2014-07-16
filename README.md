@@ -12,12 +12,15 @@ Getting started
 
 What do you have to do to use `ConsoleInterface`?
 
-1. Create an instance of `ConsoleInterface`. The constructor takes `int argc` and `char \*\* argv` variables.
+1. Create an instance of `ConsoleInterface`. The constructor takes `int argc` and `char \*\* argv` variables. Optionally you can also pass settings as third parameter (`unsigned int`). By now you can turn off arguments (`CI::Application::NoArguments` flag). When any argument is passed, application throws an exception. You can also force user to set values of all options which can have a value (`CI::Application::RequireValue` flag).
 2. Add your options and define which of them can have value using `AddOption` method.
 3. Run `Process` method. `Process` method throws some exceptions: `Exception_OptionNotExists` (when there is no option with such short name or long name), `Excpetion_InvalidOptionName` (when you try to set invalid option name; short name must be a letter a-z or A-Z; long name must starts with a letter, then you can use letters and numbers), `Exception_OptionHasNotValue` (when you try to get value of option which doesn't have a value)
 4. To check if option is set or get its value you can use `Application::IsOptionSet` or `Option::Isset` methods.
 5. To get option's value you will use these methods: `Application::GetOptionValue` and `Option::GetValue`.
 6. Values which couldn't be identified with options are treated as arguments and being passed to `std::vector<std::string>` which can be accessed by `Application::GetArguments()` method.
+7. `CI::Application::Process` method can throw by reference following types of exceptions: `Exception`, `Exception_OptionNotexists`, `Exception_NoArguments`, `Exception_ValueRequired`.
+8. `CI::Application::GetOptionValue` can throw `Exception_OptionHasNotValue`
+9. `CI::Application::AddOption` can throw `Exception_InvalidOptionName`
 
 Valid options' names
 --------------------

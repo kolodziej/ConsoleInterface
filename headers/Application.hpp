@@ -17,12 +17,12 @@ namespace CI
 			Application(int, char**, unsigned int = 0);
 			~Application();
 
-			void AddOption(char, std::string, bool);
-			void AddOption(Option*);
+			void AddOption(char, std::string, bool) throw(Exception_InvalidOptionName);
+			void AddOption(Option*) throw(Exception_InvalidOptionName);
 			bool IsOptionSet(char);
 			bool IsOptionSet(std::string &);
-			std::string & GetOptionValue(char);
-			std::string & GetOptionValue(std::string &);
+			std::string & GetOptionValue(char) throw(Exception_OptionHasNotValue);
+			std::string & GetOptionValue(std::string &) throw(Exception_OptionHasNotValue);
 			std::vector<Option*> & GetOptions();
 			std::vector<std::string> & GetArguments();
 
