@@ -31,6 +31,16 @@ void Option::SetLongName(std::string & _longName) throw(Exception_InvalidOptionN
 		throw Exception_InvalidOptionName(_longName);
 }
 
+void Option::SetHasValue(bool _hasValue)
+{
+	hasValue = _hasValue;
+}
+
+void Option::Set(bool _set)
+{
+	isset = _set;
+}
+
 void Option::SetValue(std::string & _value) throw(Exception_OptionHasNotValue)
 {
 	if (hasValue)

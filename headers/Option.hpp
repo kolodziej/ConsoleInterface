@@ -23,18 +23,8 @@ namespace CI
 
 			void SetShortName(char) throw(Exception_InvalidOptionName);
 			void SetLongName(std::string &) throw(Exception_InvalidOptionName);
-			void SetHasValue(bool _hasValue)
-			{
-				hasValue = _hasValue;
-			}
-			void Set()
-			{
-				isset = true;
-			}
-			void Unset()
-			{
-				isset = false;
-			}
+			void SetHasValue(bool = true);
+			void Set(bool = true);
 			void SetValue(std::string &) throw(Exception_OptionHasNotValue);
 
 			char GetShortName()
@@ -57,6 +47,7 @@ namespace CI
 			{
 				return value;
 			}
+
 
 		private:
 			bool _ValidateLongName(std::string &);
