@@ -49,6 +49,39 @@ void Option::SetValue(std::string & _value) throw(Exception_OptionHasNotValue)
 		throw Exception_OptionHasNotValue(longName);
 }
 
+char Option::GetShortName() const
+{
+	return shortName;
+}
+
+std::string & Option::GetLongName()
+{
+	return longName;
+}
+
+bool Option::Isset() const
+{
+	return isset;
+}
+
+bool Option::HasValue() const
+{
+	return hasValue;
+}
+
+std::string & Option::GetValue() throw(Exception_OptionHasNotValue)
+{
+	if (hasValue)
+		return value;
+	else
+	{
+		if (shortName != 0)
+			throw Exception_OptionHasNotValue(shortName);
+		else
+			throw Exception_OptionHasNotValue(longName);
+	}
+}
+
 bool Option::_ValidateLongName(std::string & _value)
 {
 	char fc = _value[0];

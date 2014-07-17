@@ -27,27 +27,11 @@ namespace CI
 			void Set(bool = true);
 			void SetValue(std::string &) throw(Exception_OptionHasNotValue);
 
-			char GetShortName()
-			{
-				return shortName;
-			}
-			std::string & GetLongName()
-			{
-				return longName;
-			}
-			bool Isset() const
-			{
-				return isset;
-			}
-			bool HasValue() const
-			{
-				return hasValue;
-			}
-			std::string & GetValue()
-			{
-				return value;
-			}
-
+			char GetShortName() const;
+			std::string & GetLongName();
+			bool Isset() const;
+			bool HasValue() const;
+			std::string & GetValue() throw(Exception_OptionHasNotValue);
 
 		private:
 			bool _ValidateLongName(std::string &);
