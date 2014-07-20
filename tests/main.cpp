@@ -49,6 +49,8 @@ ostream & operator<<(ostream & stream, Option * opt)
 int main(int argc, char ** argv)
 {
 	Application app(argc, argv, Application::NoArguments | Application::RequireValue);
+	Version v;
+	cout << "Using ConsoleInterface " << v.StringVersion() << endl;
 	fstream f("dataset", ios::in);
 	if (!f)
 	{
