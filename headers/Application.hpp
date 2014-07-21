@@ -21,8 +21,8 @@ namespace CI
 			void AddOption(Option*) throw(Exception_InvalidOptionName);
 			bool IsOptionSet(char);
 			bool IsOptionSet(std::string &);
-			std::string & GetOptionValue(char) throw(Exception_OptionHasNotValue);
-			std::string & GetOptionValue(std::string &) throw(Exception_OptionHasNotValue);
+			std::string & GetOptionValue(char, const char * = nullptr) throw(Exception_OptionHasNotValue);
+			std::string & GetOptionValue(std::string &, const char * = nullptr) throw(Exception_OptionHasNotValue);
 			std::vector<Option*> & GetOptions();
 			std::vector<std::string> & GetArguments();
 

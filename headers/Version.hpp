@@ -8,7 +8,7 @@ namespace CI
 	struct Version
 	{
 		const unsigned int ver;
-		Version() : ver(10001) {}
+		Version() : ver(10002) {}
 		const unsigned int IntVersion() const
 		{
 			return ver;

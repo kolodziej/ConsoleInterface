@@ -69,10 +69,15 @@ bool Option::HasValue() const
 	return hasValue;
 }
 
-std::string & Option::GetValue() throw(Exception_OptionHasNotValue)
+std::string & Option::GetValue(const char * _default) throw(Exception_OptionHasNotValue)
 {
 	if (hasValue)
-		return value;
+	{
+		if (value.empty())
+			return std::string(_default);
+		else
+			return value;
+	}
 	else
 	{
 		if (shortName != 0)

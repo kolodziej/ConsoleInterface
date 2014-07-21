@@ -45,16 +45,16 @@ bool Application::IsOptionSet(std::string & _longName)
 	return opt->Isset();
 }
 
-std::string & Application::GetOptionValue(char _shortName) throw(Exception_OptionHasNotValue)
+std::string & Application::GetOptionValue(char _shortName, const char * _default) throw(Exception_OptionHasNotValue)
 {
 	Option * opt = _SearchOption(_shortName);
-	return opt->GetValue();
+	return opt->GetValue(_default);
 }
 
-std::string & Application::GetOptionValue(std::string & _longName) throw(Exception_OptionHasNotValue)
+std::string & Application::GetOptionValue(std::string & _longName, const char * _default) throw(Exception_OptionHasNotValue)
 {
 	Option * opt = _SearchOption(_longName);
-	return opt->GetValue();
+	return opt->GetValue(_default);
 }
 
 std::vector<Option*> & Application::GetOptions()
