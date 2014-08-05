@@ -31,7 +31,7 @@ namespace CI
 			std::string & GetLongName();
 			bool Isset() const;
 			bool HasValue() const;
-			std::string & GetValue(const char * = nullptr) throw(Exception_OptionHasNotValue);
+			std::string & GetValue(std::string = std::string()) throw(Exception_OptionHasNotValue);
 
 		private:
 			bool _ValidateLongName(std::string &);

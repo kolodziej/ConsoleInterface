@@ -14,7 +14,9 @@ Application::Application(int _argc, char ** _argv, unsigned int _settings) :
 	queue_b(0),
 	queue_e(0),
 	settings(_settings)
-{}
+{
+	for (int i = 1; i < argc; argv_params.push_back(std::string(argv[i++])));	
+}
 
 Application::~Application()
 {}
@@ -45,13 +47,13 @@ bool Application::IsOptionSet(std::string & _longName)
 	return opt->Isset();
 }
 
-std::string & Application::GetOptionValue(char _shortName, const char * _default) throw(Exception_OptionHasNotValue)
+std::string & Application::GetOptionValue(char _shortName, std::string _default) throw(Exception_OptionHasNotValue)
 {
 	Option * opt = _SearchOption(_shortName);
 	return opt->GetValue(_default);
 }
 
-std::string & Application::GetOptionValue(std::string & _longName, const char * _default) throw(Exception_OptionHasNotValue)
+std::string & Application::GetOptionValue(std::string _longName, std::string _default) throw(Exception_OptionHasNotValue)
 {
 	Option * opt = _SearchOption(_longName);
 	return opt->GetValue(_default);

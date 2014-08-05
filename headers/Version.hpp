@@ -2,13 +2,14 @@
 #define CI_VERSION_HPP
 #include <string>
 #include <cstring>
+#define CI_VERSION 10003
 
 namespace CI
 {
 	struct Version
 	{
 		const unsigned int ver;
-		Version() : ver(10002) {}
+		Version() : ver(CI_VERSION) {}
 		const unsigned int IntVersion() const
 		{
 			return ver;

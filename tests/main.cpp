@@ -109,6 +109,9 @@ int main(int argc, char ** argv)
 		cout << (*it);
 	}
 
+	auto val = app.GetOptionValue("archive", "[default archive]");
+	cout << "With default value: " << val << "\n";
+
 	// arguments
 	cout << "Arguments: \n\e[1;32m";
 	if (app.GetArguments().size() == 0)

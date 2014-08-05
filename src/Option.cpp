@@ -69,12 +69,12 @@ bool Option::HasValue() const
 	return hasValue;
 }
 
-std::string & Option::GetValue(const char * _default) throw(Exception_OptionHasNotValue)
+std::string & Option::GetValue(std::string _default) throw(Exception_OptionHasNotValue)
 {
 	if (hasValue)
 	{
 		if (value.empty())
-			return std::string(_default);
+			return _default;
 		else
 			return value;
 	}
