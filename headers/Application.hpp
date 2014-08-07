@@ -4,6 +4,8 @@
 #include "Exception.hpp"
 #include <string>
 #include <vector>
+#include <memory>
+#include <deque>
 
 namespace CI
 {
@@ -18,12 +20,14 @@ namespace CI
 			~Application();
 
 			void AddOption(char, std::string, bool) throw(Exception_InvalidOptionName);
-			void AddOption(Option*) throw(Exception_InvalidOptionName);
+			void AddOption(std::shared_ptr<Option>) throw(Exception_InvalidOptionName);
 			bool IsOptionSet(char);
 			bool IsOptionSet(std::string &);
+			std::shared_ptr<Option> GetOption(char);
+			std::shared_ptr<Option> GetOption(std::string);
 			std::string GetOptionValue(char, std::string = std::string()) throw(Exception_OptionHasNotValue);
 			std::string GetOptionValue(std::string, std::string = std::string()) throw(Exception_OptionHasNotValue);
-			std::vector<Option*> & GetOptions();
+			std::vector<std::shared_ptr<Option>> & GetOptions();
 			std::vector<std::string> & GetArguments();
 
 			void Process() throw(Exception, Exception_OptionNotExists, Exception_InvalidOptionName, Exception_OptionHasNotValue);
@@ -31,11 +35,10 @@ namespace CI
 		private:
 			int argc;
 			char ** argv;
-			Option ** value_queue;
-			int queue_b, queue_e;
 			unsigned int settings;
+			std::deque<std::shared_ptr<Option>> queue;
 			std::vector<std::string> argv_params;
-			std::vector<Option*> options;
+			std::vector<std::shared_ptr<Option>> options;
 			std::vector<std::string> arguments;
 
 			void _ProcessShort(const char *);
@@ -48,8 +51,8 @@ namespace CI
 
 			bool _CheckSettings(Settings);
 
-			Option * _SearchOption(char) throw(Exception_OptionNotExists);
-			Option * _SearchOption(std::string &) throw(Exception_OptionNotExists);
+			std::shared_ptr<Option> _SearchOption(char) throw(Exception_OptionNotExists);
+			std::shared_ptr<Option> _SearchOption(std::string &) throw(Exception_OptionNotExists);
 	};
 }
 #endif

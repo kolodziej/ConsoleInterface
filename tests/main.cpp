@@ -3,12 +3,13 @@
 #include <vector>
 #include <fstream>
 #include <iomanip>
+#include <memory>
 #include "ConsoleInterface.hpp"
 
 using namespace std;
 using namespace CI;
 
-ostream & operator<<(ostream & stream, Option * opt)
+ostream & operator<<(ostream & stream, std::shared_ptr<Option> opt)
 {
 	stream << setw(14) << "short name: ";
 	if (opt->GetShortName() == 0)
