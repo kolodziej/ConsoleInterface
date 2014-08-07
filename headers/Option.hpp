@@ -21,17 +21,17 @@ namespace CI
 				hasValue(false)
 			{}
 
-			void SetShortName(char) throw(Exception_InvalidOptionName);
-			void SetLongName(std::string &) throw(Exception_InvalidOptionName);
+			void SetShortName(char) throw(OptionExceptionPtr);
+			void SetLongName(std::string &) throw(OptionExceptionPtr);
 			void SetHasValue(bool = true);
 			void Set(bool = true);
-			void SetValue(std::string &) throw(Exception_OptionHasNotValue);
+			void SetValue(std::string &) throw(OptionExceptionPtr);
 
 			char GetShortName() const;
 			std::string & GetLongName();
 			bool Isset() const;
 			bool HasValue() const;
-			std::string GetValue(std::string = std::string()) throw(Exception_OptionHasNotValue);
+			std::string GetValue(std::string = std::string()) throw(OptionExceptionPtr);
 
 		private:
 			bool _ValidateLongName(std::string &);

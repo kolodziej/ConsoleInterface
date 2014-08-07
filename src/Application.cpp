@@ -20,12 +20,12 @@ Application::Application(int _argc, char ** _argv, unsigned int _settings) :
 Application::~Application()
 {}
 
-void Application::AddOption(std::shared_ptr<Option>  _opt) throw(Exception_InvalidOptionName)
+void Application::AddOption(std::shared_ptr<Option>  _opt) throw(OptionExceptionPtr)
 {
 	options.push_back(_opt);
 }
 
-void Application::AddOption(char _shortName, std::string _longName, bool _hasValue) throw(Exception_InvalidOptionName)
+void Application::AddOption(char _shortName, std::string _longName, bool _hasValue) throw(OptionExceptionPtr)
 {
 	std::shared_ptr<Option> opt(new Option);
 	opt->SetShortName(_shortName);
@@ -68,13 +68,13 @@ std::shared_ptr<Option> Application::GetOption(std::string _longName)
 	}
 }
 
-std::string Application::GetOptionValue(char _shortName, std::string _default) throw(Exception_OptionHasNotValue)
+std::string Application::GetOptionValue(char _shortName, std::string _default) throw(OptionExceptionPtr)
 {
 	std::shared_ptr<Option> opt = _SearchOption(_shortName);
 	return opt->GetValue(_default);
 }
 
-std::string Application::GetOptionValue(std::string _longName, std::string _default) throw(Exception_OptionHasNotValue)
+std::string Application::GetOptionValue(std::string _longName, std::string _default) throw(OptionExceptionPtr)
 {
 	std::shared_ptr<Option> opt = _SearchOption(_longName);
 	return opt->GetValue(_default);
@@ -90,7 +90,7 @@ std::vector<std::string> & Application::GetArguments()
 	return arguments;
 }
 
-void Application::Process() throw(Exception, Exception_OptionNotExists, Exception_InvalidOptionName, Exception_OptionHasNotValue)
+void Application::Process() throw(ExceptionPtr, OptionExceptionPtr)
 {
 	for (int i = 1; i < argc; ++i)
 	{
@@ -108,7 +108,7 @@ void Application::Process() throw(Exception, Exception_OptionNotExists, Exceptio
 	}
 	if (!queue.empty() && _CheckSettings(RequireValue))
 	{
-		throw Exception_ValuesRequired();
+		throw ExceptionPtr(new Exception_ValuesRequired());
 	}
 }
 
@@ -135,7 +135,7 @@ bool Application::_ProcessOption(char _shortName)
 {
 	std::shared_ptr<Option> opt = _SearchOption(_shortName);
 	if (opt->Isset())
-		throw Exception_OptionIsSet();
+		throw OptionExceptionPtr(new Exception_OptionIsSet(_shortName));
 
 	// value
 	if (opt->HasValue())
@@ -150,6 +150,9 @@ bool Application::_ProcessOption(char _shortName)
 bool Application::_ProcessOption(std::string _longName)
 {
 	std::shared_ptr<Option> opt = _SearchOption(_longName);
+	if (opt->Isset())
+		throw OptionExceptionPtr(new Exception_OptionIsSet(_longName));
+
 	// value
 	if (opt->HasValue())
 		queue.push_back(opt);
@@ -169,7 +172,7 @@ void Application::_ProcessValue(const char * _val)
 		queue.pop_front();
 	} else if (_CheckSettings(NoArguments))
 	{
-		throw Exception_NoArguments();
+		throw ExceptionPtr(new Exception_NoArguments());
 	} else
 	{
 		_ProcessArgument(_val);
@@ -187,26 +190,26 @@ bool Application::_CheckSettings(Settings _set)
 	return static_cast<bool>(settings & _set);
 }
 
-std::shared_ptr<Option> Application::_SearchOption(char _shortName) throw(Exception_OptionNotExists)
+std::shared_ptr<Option> Application::_SearchOption(char _shortName) throw(OptionExceptionPtr)
 {
 	auto it = options.begin();
 	while (it != options.end() && (*it)->GetShortName() != _shortName)
 		++it;
 
 	if (it == options.end())
-		throw Exception_OptionNotExists(_shortName);
+		throw OptionExceptionPtr(new Exception_OptionNotExists(_shortName));
 
 	return (*it);
 }
 
-std::shared_ptr<Option> Application::_SearchOption(std::string & _longName) throw(Exception_OptionNotExists)
+std::shared_ptr<Option> Application::_SearchOption(std::string & _longName) throw(OptionExceptionPtr)
 {
 	auto it = options.begin();
 	while (it != options.end() && (*it)->GetLongName() != _longName)
 		++it;
 
 	if (it == options.end())
-		throw Exception_OptionNotExists(_longName);
+		throw OptionExceptionPtr(new Exception_OptionNotExists(_longName));
 
 	return (*it);
 }

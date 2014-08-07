@@ -4,7 +4,7 @@
 
 using namespace CI;
 
-void Option::SetShortName(char _shortName) throw(Exception_InvalidOptionName)
+void Option::SetShortName(char _shortName) throw(OptionExceptionPtr)
 {
 	if (_shortName == 0)
 	{
@@ -15,10 +15,10 @@ void Option::SetShortName(char _shortName) throw(Exception_InvalidOptionName)
 	if ((_shortName >= 'a' && _shortName <= 'z') || (_shortName >= 'A' && _shortName <= 'Z'))
 		shortName = _shortName;
 	else
-		throw Exception_InvalidOptionName(_shortName);
+		throw OptionExceptionPtr(new Exception_InvalidOptionName(_shortName));
 }
 
-void Option::SetLongName(std::string & _longName) throw(Exception_InvalidOptionName)
+void Option::SetLongName(std::string & _longName) throw(OptionExceptionPtr)
 {
 	if (_longName.empty())
 	{
@@ -28,7 +28,7 @@ void Option::SetLongName(std::string & _longName) throw(Exception_InvalidOptionN
 	if (_ValidateLongName(_longName))
 		longName = _longName;
 	else
-		throw Exception_InvalidOptionName(_longName);
+		throw OptionExceptionPtr(new Exception_InvalidOptionName(_longName));
 }
 
 void Option::SetHasValue(bool _hasValue)
@@ -41,7 +41,7 @@ void Option::Set(bool _set)
 	isset = _set;
 }
 
-void Option::SetValue(std::string & _value) throw(Exception_OptionHasNotValue)
+void Option::SetValue(std::string & _value) throw(OptionExceptionPtr)
 {
 	if (hasValue)
 		value = _value;
@@ -69,7 +69,7 @@ bool Option::HasValue() const
 	return hasValue;
 }
 
-std::string Option::GetValue(std::string _default) throw(Exception_OptionHasNotValue)
+std::string Option::GetValue(std::string _default) throw(OptionExceptionPtr)
 {
 	if (hasValue)
 	{
@@ -81,9 +81,9 @@ std::string Option::GetValue(std::string _default) throw(Exception_OptionHasNotV
 	else
 	{
 		if (shortName != 0)
-			throw Exception_OptionHasNotValue(shortName);
+			throw OptionExceptionPtr(new Exception_OptionHasNotValue(shortName));
 		else
-			throw Exception_OptionHasNotValue(longName);
+			throw OptionExceptionPtr(new Exception_OptionHasNotValue(longName));
 	}
 }
 

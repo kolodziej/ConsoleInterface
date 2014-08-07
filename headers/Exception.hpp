@@ -2,7 +2,7 @@
 #define CI_EXCEPTION_HPP
 #include <stdexcept>
 #include <string>
-#include <sstream>
+#include <memory>
 
 namespace CI
 {
@@ -12,27 +12,36 @@ namespace CI
 		virtual const char * what() const noexcept;
 	};
 
-	struct Exception_OptionNotExists : Exception
+	typedef std::shared_ptr<Exception> ExceptionPtr;
+
+	struct OptionException : Exception
 	{
-		std::string error;
-		Exception_OptionNotExists(std::string);
-		Exception_OptionNotExists(char);
+		std::string option;
+		OptionException(std::string);
+		OptionException(char);
+		virtual const char * what() const noexcept = 0;
+	};
+
+	typedef std::shared_ptr<OptionException> OptionExceptionPtr;
+
+	struct Exception_OptionNotExists : OptionException
+	{
+		Exception_OptionNotExists(std::string _longName) : OptionException(_longName) {};
+		Exception_OptionNotExists(char _shortName) : OptionException(_shortName) {};
 		virtual const char * what() const noexcept;
 	};
 
-	struct Exception_InvalidOptionName : Exception
+	struct Exception_InvalidOptionName : OptionException
 	{
-		std::string error;
-		Exception_InvalidOptionName(std::string);
-		Exception_InvalidOptionName(char);
+		Exception_InvalidOptionName(std::string _longName) : OptionException(_longName) {};
+		Exception_InvalidOptionName(char _shortName) : OptionException(_shortName) {};
 		virtual const char * what() const noexcept;
 	};
 
-	struct Exception_OptionHasNotValue : Exception
+	struct Exception_OptionHasNotValue : OptionException
 	{
-		std::string error;
-		Exception_OptionHasNotValue(std::string &);
-		Exception_OptionHasNotValue(char);
+		Exception_OptionHasNotValue(std::string _longName) : OptionException(_longName) {};
+		Exception_OptionHasNotValue(char _shortName) : OptionException(_shortName) {};
 		virtual const char * what() const noexcept;
 	};
 
@@ -46,8 +55,10 @@ namespace CI
 		virtual const char * what() const noexcept;
 	};
 
-	struct Exception_OptionIsSet : Exception
+	struct Exception_OptionIsSet : OptionException
 	{
+		Exception_OptionIsSet(char _shortName) : OptionException(_shortName) {}
+		Exception_OptionIsSet(std::string _longName) : OptionException(_longName) {}
 		virtual const char * what() const noexcept;
 	};
 }

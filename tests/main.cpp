@@ -86,25 +86,13 @@ int main(int argc, char ** argv)
 	// processing all arguments and values passed in argv
 	try {
 		app.Process();
-	} catch (Exception_OptionNotExists &e)
+	} catch (ExceptionPtr e)
 	{
-		cerr << e.what() << "\n";
+		cerr << e->what();
 		return 1;
-	} catch (Exception_OptionHasNotValue &e)
+	} catch (OptionExceptionPtr e)
 	{
-		cerr << e.what() << "\n";
-		return 1;
-	} catch (Exception_NoArguments &e)
-	{
-		cerr << e.what() << "\n";
-		return 1;
-	} catch (Exception_ValuesRequired &e)
-	{
-		cerr << e.what() << "\n";
-		return 1;
-	} catch (Exception_OptionIsSet &e)
-	{
-		cerr << e.what() << "\n";
+		cerr << e->what();
 		return 1;
 	}
 

@@ -19,18 +19,18 @@ namespace CI
 			Application(int, char**, unsigned int = 0);
 			~Application();
 
-			void AddOption(char, std::string, bool) throw(Exception_InvalidOptionName);
-			void AddOption(std::shared_ptr<Option>) throw(Exception_InvalidOptionName);
+			void AddOption(char, std::string, bool) throw(OptionExceptionPtr);
+			void AddOption(std::shared_ptr<Option>) throw(OptionExceptionPtr);
 			bool IsOptionSet(char);
 			bool IsOptionSet(std::string &);
 			std::shared_ptr<Option> GetOption(char);
 			std::shared_ptr<Option> GetOption(std::string);
-			std::string GetOptionValue(char, std::string = std::string()) throw(Exception_OptionHasNotValue);
-			std::string GetOptionValue(std::string, std::string = std::string()) throw(Exception_OptionHasNotValue);
+			std::string GetOptionValue(char, std::string = std::string()) throw(OptionExceptionPtr);
+			std::string GetOptionValue(std::string, std::string = std::string()) throw(OptionExceptionPtr);
 			std::vector<std::shared_ptr<Option>> & GetOptions();
 			std::vector<std::string> & GetArguments();
 
-			void Process() throw(Exception, Exception_OptionNotExists, Exception_InvalidOptionName, Exception_OptionHasNotValue);
+			void Process() throw(ExceptionPtr, OptionExceptionPtr);
 
 		private:
 			int argc;
@@ -51,8 +51,8 @@ namespace CI
 
 			bool _CheckSettings(Settings);
 
-			std::shared_ptr<Option> _SearchOption(char) throw(Exception_OptionNotExists);
-			std::shared_ptr<Option> _SearchOption(std::string &) throw(Exception_OptionNotExists);
+			std::shared_ptr<Option> _SearchOption(char) throw(OptionExceptionPtr);
+			std::shared_ptr<Option> _SearchOption(std::string &) throw(OptionExceptionPtr);
 	};
 }
 #endif

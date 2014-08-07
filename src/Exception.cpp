@@ -1,82 +1,54 @@
 #include "Exception.hpp"
-#include <sstream>
 #include <string>
+#include <memory>
 
 using namespace CI;
 
 const char * Exception::what() const throw()
 {
-	return "CI: An undefined error occurred!";
+	return "CI: An undefined error occurred!\n";
 }
 
-Exception_OptionNotExists::Exception_OptionNotExists(std::string  _longName)
+OptionException::OptionException(std::string _longName)
 {
-	std::stringstream str;
-	str << "CI: Option --" << _longName << " does not exist!\n";
-	getline(str, error);
+	option = std::string("--") + _longName;
 }
 
-Exception_OptionNotExists::Exception_OptionNotExists(char _shortName)
+OptionException::OptionException(char _shortName)
 {
-	std::stringstream str;
-	str << "CI: Option -" << _shortName << " does not exist!\n";
-	getline(str, error);
+	option = std::string("-") + _shortName;
 }
 
-const char * Exception_OptionNotExists::what() const throw()
+const char * Exception_OptionNotExists::what() const noexcept
 {
-	return error.c_str();
-}
-
-Exception_InvalidOptionName::Exception_InvalidOptionName(std::string _longName)
-{
-	std::stringstream str;
-	str << "CI: --" << _longName << " is invalid option name! Check valid options' names in README.md.\n";
-	getline(str, error);
-}
-
-Exception_InvalidOptionName::Exception_InvalidOptionName(char _shortName)
-{
-	std::stringstream str;
-	str << "CI: -" << _shortName << " is invalid option name! Check valid options' names in README.md.\n";
-	getline(str, error);
+	std::string error = "CI: Option " + option + " does not exist!\n";
+	return error.data();
 }
 
 const char * Exception_InvalidOptionName::what() const throw()
 {
-	return error.c_str();
-}
-
-Exception_OptionHasNotValue::Exception_OptionHasNotValue(std::string & _longName)
-{
-	std::stringstream str;
-	str << "CI: --" << _longName << " cannot have a value\n";
-	getline(str, error);
-}
-
-Exception_OptionHasNotValue::Exception_OptionHasNotValue(char _shortName)
-{
-	std::stringstream str;
-	str << "CI: -" << _shortName << " cannot have a value\n";
-	getline(str, error);
+	std::string error = "CI: " + option + " is invalid option name! Check naming rules in README.md\n";
+	return error.data();
 }
 
 const char * Exception_OptionHasNotValue::what() const throw()
 {
-	return error.c_str();
+	std::string error = "CI: Option " + option + " cannot have a value!\n";
+	return error.data();
 }
 
 const char * Exception_NoArguments::what() const throw()
 {
-	return "CI: Using arguments is not allowed!";
+	return "CI: Using arguments is not allowed!\n";
 }
 
 const char * Exception_ValuesRequired::what() const throw()
 {
-	return "CI: Not all options which get value have them!";
+	return "CI: Not all options which get value have them!\n";
 }
 
 const char * Exception_OptionIsSet::what() const noexcept
 {
-	return "CI: Option has already been set!";
+	std::string error = "CI: Option " + option + " has already been set!\n";
+	return error.data();
 }
