@@ -45,6 +45,11 @@ namespace CI
 	{
 		virtual const char * what() const noexcept;
 	};
+
+	struct Exception_OptionIsSet : Exception
+	{
+		virtual const char * what() const noexcept;
+	};
 }
 
 #endif

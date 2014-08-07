@@ -75,3 +75,8 @@ const char * Exception_ValuesRequired::what() const throw()
 {
 	return "CI: Not all options which get value have them!";
 }
+
+const char * Exception_OptionIsSet::what() const noexcept
+{
+	return "CI: Option has already been set!";
+}
