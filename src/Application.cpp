@@ -134,6 +134,9 @@ void Application::_ProcessLong(const char * _str)
 bool Application::_ProcessOption(char _shortName)
 {
 	std::shared_ptr<Option> opt = _SearchOption(_shortName);
+	if (opt->Isset())
+		throw Exception_OptionIsSet();
+
 	// value
 	if (opt->HasValue())
 		queue.push_back(opt);

@@ -49,7 +49,7 @@ ostream & operator<<(ostream & stream, std::shared_ptr<Option> opt)
 
 int main(int argc, char ** argv)
 {
-	Application app(argc, argv, Application::NoArguments | Application::RequireValue);
+	Application app(argc, argv, Application::RequireValue);
 	cout << "Using ConsoleInterface " << CI::Version::StringVersion() << endl;
 	fstream f("dataset", ios::in);
 	if (!f)
@@ -99,6 +99,10 @@ int main(int argc, char ** argv)
 		cerr << e.what() << "\n";
 		return 1;
 	} catch (Exception_ValuesRequired &e)
+	{
+		cerr << e.what() << "\n";
+		return 1;
+	} catch (Exception_OptionIsSet &e)
 	{
 		cerr << e.what() << "\n";
 		return 1;
