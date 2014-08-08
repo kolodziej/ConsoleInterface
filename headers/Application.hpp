@@ -6,6 +6,7 @@
 #include <vector>
 #include <memory>
 #include <deque>
+#include <stdexcept>
 
 namespace CI
 {
@@ -27,6 +28,7 @@ namespace CI
 			std::shared_ptr<Option> GetOption(std::string);
 			std::string GetOptionValue(char, std::string = std::string()) throw(OptionExceptionPtr);
 			std::string GetOptionValue(std::string, std::string = std::string()) throw(OptionExceptionPtr);
+			std::string GetArgument(size_t) throw(std::out_of_range);
 			std::vector<std::shared_ptr<Option>> & GetOptions();
 			std::vector<std::string> & GetArguments();
 

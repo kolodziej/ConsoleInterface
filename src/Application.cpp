@@ -6,6 +6,7 @@
 #include <cstring>
 #include <memory>
 #include <deque>
+#include <stdexcept>
 
 using namespace CI;
 
@@ -78,6 +79,15 @@ std::string Application::GetOptionValue(std::string _longName, std::string _defa
 {
 	std::shared_ptr<Option> opt = _SearchOption(_longName);
 	return opt->GetValue(_default);
+}
+
+std::string Application::GetArgument(size_t index) throw(std::out_of_range)
+{
+	if (index < arguments.size())
+		return arguments[index];
+
+	else
+		throw std::out_of_range("Your index is too large!\n");
 }
 
 std::vector<std::shared_ptr<Option>> & Application::GetOptions()
