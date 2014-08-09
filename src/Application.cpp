@@ -26,12 +26,13 @@ void Application::AddOption(std::shared_ptr<Option>  _opt) throw(OptionException
 	options.push_back(_opt);
 }
 
-void Application::AddOption(char _shortName, std::string _longName, bool _hasValue) throw(OptionExceptionPtr)
+void Application::AddOption(char _shortName, std::string _longName, bool _hasValue, bool _allowMultiValue) throw(OptionExceptionPtr)
 {
 	std::shared_ptr<Option> opt(new Option);
 	opt->SetShortName(_shortName);
 	opt->SetLongName(_longName);
 	opt->SetHasValue(_hasValue);
+	opt->SetAllowMultiValue(_allowMultiValue);
 	AddOption(opt);
 }
 
@@ -144,7 +145,7 @@ void Application::_ProcessLong(const char * _str)
 bool Application::_ProcessOption(char _shortName)
 {
 	std::shared_ptr<Option> opt = _SearchOption(_shortName);
-	if (opt->Isset())
+	if (opt->Isset() && opt->IsAllowedMultiValue() == false)
 		throw OptionExceptionPtr(new Exception_OptionIsSet(_shortName));
 
 	// value
@@ -160,7 +161,7 @@ bool Application::_ProcessOption(char _shortName)
 bool Application::_ProcessOption(std::string _longName)
 {
 	std::shared_ptr<Option> opt = _SearchOption(_longName);
-	if (opt->Isset())
+	if (opt->Isset() && opt->IsAllowedMultiValue())
 		throw OptionExceptionPtr(new Exception_OptionIsSet(_longName));
 
 	// value
@@ -178,7 +179,11 @@ void Application::_ProcessValue(const char * _val)
 	if (!queue.empty())
 	{
 		std::string value(_val);
-		queue.front()->SetValue(value);
+		if (queue.front()->IsAllowedMultiValue())
+			queue.front()->AddValue(value);
+		else
+			queue.front()->SetValue(value);
+
 		queue.pop_front();
 	} else if (_CheckSettings(NoArguments))
 	{

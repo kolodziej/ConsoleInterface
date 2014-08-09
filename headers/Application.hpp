@@ -20,7 +20,7 @@ namespace CI
 			Application(int, char**, unsigned int = 0);
 			~Application();
 
-			void AddOption(char, std::string, bool) throw(OptionExceptionPtr);
+			void AddOption(char, std::string, bool, bool = false) throw(OptionExceptionPtr);
 			void AddOption(std::shared_ptr<Option>) throw(OptionExceptionPtr);
 			bool IsOptionSet(char);
 			bool IsOptionSet(std::string &);
