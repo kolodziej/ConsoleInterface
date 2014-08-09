@@ -2,6 +2,7 @@
 #define CI_OPTION_HPP
 #include "Exception.hpp"
 #include <string>
+#include <vector>
 
 namespace CI
 {
@@ -12,26 +13,32 @@ namespace CI
 			std::string longName;
 			bool isset;
 			bool hasValue;
-			std::string value;
+			bool allowMultiValue;
+			std::vector<std::string> values;
 
 		public:
 			Option() :
 				shortName(0),
 				isset(false),
-				hasValue(false)
+				hasValue(false),
+				allowMultiValue(false)
 			{}
 
 			void SetShortName(char) throw(OptionExceptionPtr);
 			void SetLongName(std::string &) throw(OptionExceptionPtr);
 			void SetHasValue(bool = true);
+			void SetAllowMultiValue(bool = true);
 			void Set(bool = true);
 			void SetValue(std::string &) throw(OptionExceptionPtr);
+			void AddValue(std::string &) throw(OptionExceptionPtr);
 
 			char GetShortName() const;
 			std::string & GetLongName();
 			bool Isset() const;
 			bool HasValue() const;
+			bool IsAllowedMultiValue() const;
 			std::string GetValue(std::string = std::string()) throw(OptionExceptionPtr);
+			std::vector<std::string> GetValues() throw(OptionExceptionPtr);
 
 		private:
 			bool _ValidateLongName(std::string &);

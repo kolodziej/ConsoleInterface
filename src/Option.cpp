@@ -36,6 +36,14 @@ void Option::SetHasValue(bool _hasValue)
 	hasValue = _hasValue;
 }
 
+void Option::SetAllowMultiValue(bool _allowMultiValue)
+{
+	if (_allowMultiValue)
+		SetHasValue(true);
+
+	allowMultiValue = _allowMultiValue;
+}
+
 void Option::Set(bool _set)
 {
 	isset = _set;
@@ -44,9 +52,17 @@ void Option::Set(bool _set)
 void Option::SetValue(std::string & _value) throw(OptionExceptionPtr)
 {
 	if (hasValue)
-		value = _value;
+		*(values.begin()) = _value;
 	else
-		throw Exception_OptionHasNotValue(longName);
+		throw OptionExceptionPtr(new Exception_OptionHasNotValue(longName));
+}
+
+void Option::AddValue(std::string & _value) throw(OptionExceptionPtr)
+{
+	if (allowMultiValue)
+		values.push_back(_value);
+	else
+		throw OptionExceptionPtr(new Exception_OptionNotMultiValue(longName));
 }
 
 char Option::GetShortName() const
@@ -69,14 +85,19 @@ bool Option::HasValue() const
 	return hasValue;
 }
 
+bool Option::IsAllowedMultiValue() const
+{
+	return allowMultiValue;
+}
+
 std::string Option::GetValue(std::string _default) throw(OptionExceptionPtr)
 {
 	if (hasValue)
 	{
-		if (value.empty())
+		if (values.empty())
 			return _default;
 		else
-			return value;
+			return *(values.begin());
 	}
 	else
 	{
@@ -85,6 +106,14 @@ std::string Option::GetValue(std::string _default) throw(OptionExceptionPtr)
 		else
 			throw OptionExceptionPtr(new Exception_OptionHasNotValue(longName));
 	}
+}
+
+std::vector<std::string> Option::GetValues() throw(OptionExceptionPtr)
+{
+	if (allowMultiValue)
+		return values;
+	else
+		throw OptionExceptionPtr(new Exception_OptionNotMultiValue(longName));
 }
 
 bool Option::_ValidateLongName(std::string & _value)

@@ -61,6 +61,13 @@ namespace CI
 		Exception_OptionIsSet(std::string _longName) : OptionException(_longName) {}
 		virtual const char * what() const noexcept;
 	};
+
+	struct Exception_OptionNotMultiValue : OptionException
+	{
+		Exception_OptionNotMultiValue(char _shortName) : OptionException(_shortName) {}
+		Exception_OptionNotMultiValue(std::string _longName) : OptionException(_longName) {}
+		virtual const char * what() const noexcept;
+	};
 }
 
 #endif

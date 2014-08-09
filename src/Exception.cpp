@@ -52,3 +52,9 @@ const char * Exception_OptionIsSet::what() const noexcept
 	std::string error = "CI: Option " + option + " has already been set!\n";
 	return error.data();
 }
+
+const char * Exception_OptionNotMultiValue::what() const noexcept
+{
+	std::string error = "CI: Option " + option + " cannot have many values!\n";
+	return error.data();
+}
