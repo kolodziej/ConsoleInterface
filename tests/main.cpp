@@ -36,7 +36,16 @@ ostream & operator<<(ostream & stream, std::shared_ptr<Option> opt)
 		if (opt->GetValue().empty())
 			stream << "\e[2m[not set]\e[0m\n";
 		else
-			stream << opt->GetValue() << "\n";
+		{
+			if (opt->IsAllowedMultiValue())
+			{
+				for (auto v : opt->GetValues())
+					stream << v << ", ";
+			} else
+				stream << opt->GetValue();
+
+			stream << "\n";
+		}
 
 	} else
 	{
@@ -77,6 +86,7 @@ int main(int argc, char ** argv)
 
 			app.AddOption(shortName, longName, boolHasValue);
 		}
+		app.AddOption('I', std::string(), true, true);
 	} catch (Exception_InvalidOptionName &e)
 	{
 		cerr << e.what() << "\n";
