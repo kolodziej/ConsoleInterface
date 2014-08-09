@@ -24,6 +24,13 @@ namespace CI
 				allowMultiValue(false)
 			{}
 
+			Option(char _shortName, std::string & _longName, bool _hasValue, bool _allowMultiValue = false) :
+				shortName(_shortName),
+				longName(_longName),
+				hasValue(_hasValue),
+				allowMultiValue(_allowMultiValue)
+			{}
+
 			void SetShortName(char) throw(OptionExceptionPtr);
 			void SetLongName(std::string &) throw(OptionExceptionPtr);
 			void SetHasValue(bool = true);
