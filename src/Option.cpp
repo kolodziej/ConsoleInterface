@@ -52,8 +52,10 @@ void Option::Set(bool _set)
 void Option::SetValue(std::string & _value) throw(OptionExceptionPtr)
 {
 	if (hasValue)
-		*(values.begin()) = _value;
-	else
+	{
+		values.clear();
+		values.push_back(_value);
+	} else
 		throw OptionExceptionPtr(new Exception_OptionHasNotValue(longName));
 }
 

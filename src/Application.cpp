@@ -28,11 +28,7 @@ void Application::AddOption(std::shared_ptr<Option>  _opt) throw(OptionException
 
 void Application::AddOption(char _shortName, std::string _longName, bool _hasValue, bool _allowMultiValue) throw(OptionExceptionPtr)
 {
-	std::shared_ptr<Option> opt(new Option);
-	opt->SetShortName(_shortName);
-	opt->SetLongName(_longName);
-	opt->SetHasValue(_hasValue);
-	opt->SetAllowMultiValue(_allowMultiValue);
+	std::shared_ptr<Option> opt(new Option(_shortName, _longName, _hasValue, _allowMultiValue));
 	AddOption(opt);
 }
 
