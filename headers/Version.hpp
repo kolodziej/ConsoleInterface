@@ -2,7 +2,7 @@
 #define CI_VERSION_HPP
 #include <string>
 #include <cstring>
-#define CI_VERSION 10101
+#define CI_VERSION 10200
 
 namespace CI
 {
