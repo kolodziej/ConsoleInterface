@@ -60,38 +60,12 @@ int main(int argc, char ** argv)
 {
 	Application app(argc, argv, Application::RequireValue);
 	cout << "Using ConsoleInterface " << CI::Version::StringVersion() << endl;
-	fstream f("dataset", ios::in);
-	if (!f)
-	{
-		cerr << "Error while opening `dataset' file which contains rules!\n";
-		return 1;
-	}
-	char shortName;
-	string longName;
-	char hasValue;
-	char boolHasValue;
-	try {
-		int num;
-		f >> num;
-		for (int i = 0; i < num; ++i)
-		{
-			f >> shortName >> longName >> hasValue;
-			if (shortName == '0')
-				shortName = 0;
 
-			if (hasValue == 'y')
-				boolHasValue = true;
-			else
-				boolHasValue = false;
-
-			app.AddOption(shortName, longName, boolHasValue);
-		}
-		app.AddOption('I', std::string(), true, true);
-	} catch (Exception_InvalidOptionName &e)
-	{
-		cerr << e.what() << "\n";
-		return 1;
-	}
+	app.AddOption('a', "archive", true);
+	app.AddOption('b', "branch", true);
+	app.AddOption('I', std::string(), true, true);
+	app.AddOption(0, "help", false);
+	app.AddOption('v', std::string(), false);
 
 	// processing all arguments and values passed in argv
 	try {

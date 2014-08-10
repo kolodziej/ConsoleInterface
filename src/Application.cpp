@@ -157,7 +157,7 @@ bool Application::_ProcessOption(char _shortName)
 bool Application::_ProcessOption(std::string _longName)
 {
 	std::shared_ptr<Option> opt = _SearchOption(_longName);
-	if (opt->Isset() && opt->IsAllowedMultiValue())
+	if (opt->Isset() && opt->IsAllowedMultiValue() == false)
 		throw OptionExceptionPtr(new Exception_OptionIsSet(_longName));
 
 	// value
