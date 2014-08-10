@@ -16,6 +16,8 @@ namespace CI
 			enum Settings { 
 				RequireValue = 1 << 0,
 				NoArguments = 1 << 1,
+				AllowRedefineOption = 1 << 2,
+				ShortOptionsWithValues = 1 << 3
 			};
 			Application(int, char**, unsigned int = 0);
 			~Application();
@@ -44,6 +46,7 @@ namespace CI
 			std::vector<std::string> arguments;
 
 			void _ProcessShort(const char *);
+			void _ProcessShortWithValue(char, const char *);
 			void _ProcessLong(const char *);
 			void _ProcessValue(const char *);
 			void _ProcessArgument(const char *);

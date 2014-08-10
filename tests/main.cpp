@@ -58,7 +58,7 @@ ostream & operator<<(ostream & stream, std::shared_ptr<Option> opt)
 
 int main(int argc, char ** argv)
 {
-	Application app(argc, argv, Application::RequireValue);
+	Application app(argc, argv, Application::RequireValue | Application::AllowRedefineOption | Application::ShortOptionsWithValues);
 	cout << "Using ConsoleInterface " << CI::Version::StringVersion() << endl;
 
 	app.AddOption('a', "archive", true);

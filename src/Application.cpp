@@ -107,7 +107,13 @@ void Application::Process() throw(ExceptionPtr, OptionExceptionPtr)
 			_ProcessLong(arg+2);
 		} else if (arg[0] == '-')
 		{
-			_ProcessShort(arg+1);
+			if (_CheckSettings(ShortOptionsWithValues) && strlen(arg+1) > 1)
+			{
+				_ProcessShortWithValue(arg[1], arg+2);
+			} else
+			{
+				_ProcessShort(arg+1);
+			}
 		} else
 		{
 			_ProcessValue(arg);
@@ -131,6 +137,24 @@ void Application::_ProcessShort(const char * _str)
 	}
 }
 
+void Application::_ProcessShortWithValue(char _shortName, const char * _value)
+{
+	std::shared_ptr<Option> opt = _SearchOption(_shortName);
+	if (opt->Isset() && opt->IsAllowedMultiValue() == false && _CheckSettings(AllowRedefineOption))
+		throw OptionExceptionPtr(new Exception_OptionIsSet(_shortName));
+
+	if (opt->HasValue())
+	{
+		std::string value(_value);
+		if (opt->IsAllowedMultiValue())
+			opt->AddValue(value);
+		else
+			opt->SetValue(value);
+	}
+
+	opt->Set();
+}
+
 void Application::_ProcessLong(const char * _str)
 {
 	size_t len = strlen(_str);
@@ -141,7 +165,7 @@ void Application::_ProcessLong(const char * _str)
 bool Application::_ProcessOption(char _shortName)
 {
 	std::shared_ptr<Option> opt = _SearchOption(_shortName);
-	if (opt->Isset() && opt->IsAllowedMultiValue() == false)
+	if (opt->Isset() && opt->IsAllowedMultiValue() == false && _CheckSettings(AllowRedefineOption) == false)
 		throw OptionExceptionPtr(new Exception_OptionIsSet(_shortName));
 
 	// value
@@ -157,7 +181,7 @@ bool Application::_ProcessOption(char _shortName)
 bool Application::_ProcessOption(std::string _longName)
 {
 	std::shared_ptr<Option> opt = _SearchOption(_longName);
-	if (opt->Isset() && opt->IsAllowedMultiValue() == false)
+	if (opt->Isset() && opt->IsAllowedMultiValue() == false && _CheckSettings(AllowRedefineOption) == false)
 		throw OptionExceptionPtr(new Exception_OptionIsSet(_longName));
 
 	// value
